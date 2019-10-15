@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "Application Form";
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h2 class="h3 mb-0 text-gray-800">Your Application Form</h2>
+</div>
+
+@ViewData["Message"]
+
+<p>or return the number passed in to the numtimes:</p>
+@for (int i = 0; i < (int)ViewData["NumTimes"]; i++)
+{
+    <li>@ViewData["Message"]</li>
+    <input type="text" id="Message" value="@ViewData["Message"]" />
+    <input id="File1" type="file" />
+    <select id="Select1">
+        <option></option>
+    </select>
+}
+
+
