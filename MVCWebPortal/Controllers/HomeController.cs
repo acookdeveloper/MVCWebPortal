@@ -10,7 +10,8 @@ namespace MVCWebPortal.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            //return View();
+            return RedirectToAction("../Login");
         }
 
         public ActionResult About()

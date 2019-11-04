@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DevPortalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Assessment_Questions">
+          <Key>
+            <PropertyRef Name="QuestionID" />
+          </Key>
+          <Property Name="QuestionID" Type="int" Nullable="false" />
+          <Property Name="QuestionDisplayName" Type="nvarchar" MaxLength="200" />
+          <Property Name="QuestionDisplayGuidance" Type="nvarchar" MaxLength="500" />
+          <Property Name="InternalName" Type="nvarchar" MaxLength="100" />
+          <Property Name="InternalCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="Archive" Type="tinyint" />
+          <Property Name="QuestionSetID" Type="int" />
+        </EntityType>
+        <EntityType Name="Assessment_QuestionSets">
+          <Key>
+            <PropertyRef Name="QuestionSetID" />
+          </Key>
+          <Property Name="QuestionSetID" Type="int" Nullable="false" />
+          <Property Name="QuestionSetDisplayName" Type="nvarchar" MaxLength="100" />
+          <Property Name="QuestionSetInternalName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Archived" Type="tinyint" />
+          <Property Name="Order" Type="int" />
+        </EntityType>
+        <EntityType Name="Companies">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="AddressLine1" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="AddressLine2" Type="nvarchar" MaxLength="100" />
+          <Property Name="TownCity" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="County" Type="nvarchar" MaxLength="100" />
+          <Property Name="Postcode" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CompanyTel" Type="nvarchar" MaxLength="14" />
+          <Property Name="CompanyGUID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Menu">
+          <Key>
+            <PropertyRef Name="MenuID" />
+          </Key>
+          <Property Name="MenuID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MenuItemName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="URL" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MenuAccessLevels">
+          <Key>
+            <PropertyRef Name="MenuID" />
+            <PropertyRef Name="AccessLevelID" />
+          </Key>
+          <Property Name="MenuID" Type="int" Nullable="false" />
+          <Property Name="AccessLevelID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UA_PortalLogin">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="PasswordHash" Type="binary" MaxLength="64" />
+          <Property Name="Salt" Type="uniqueidentifier" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Position" Type="nvarchar" MaxLength="50" />
+          <Property Name="AccessLevelID" Type="int" />
+          <Property Name="UserGUID" Type="uniqueidentifier" />
+          <Property Name="PasswordToken" Type="uniqueidentifier" />
+          <Property Name="PasswordTokenDate" Type="datetime" />
+          <Property Name="CompanyID" Type="int" />
+        </EntityType>
+        <Association Name="FK_Assessment_Questions_Assessment_Questions">
+          <End Role="Assessment_QuestionSets" Type="Self.Assessment_QuestionSets" Multiplicity="0..1" />
+          <End Role="Assessment_Questions" Type="Self.Assessment_Questions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Assessment_QuestionSets">
+              <PropertyRef Name="QuestionSetID" />
+            </Principal>
+            <Dependent Role="Assessment_Questions">
+              <PropertyRef Name="QuestionSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UA_PortalLogin_Companies">
+          <End Role="Companies" Type="Self.Companies" Multiplicity="0..1" />
+          <End Role="UA_PortalLogin" Type="Self.UA_PortalLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="UA_PortalLogin">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DevPortalModelStoreContainer">
+          <EntitySet Name="Assessment_Questions" EntityType="Self.Assessment_Questions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Assessment_QuestionSets" EntityType="Self.Assessment_QuestionSets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Companies" EntityType="Self.Companies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Menu" EntityType="Self.Menu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MenuAccessLevels" EntityType="Self.MenuAccessLevels" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UA_PortalLogin" EntityType="Self.UA_PortalLogin" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Assessment_Questions_Assessment_Questions" Association="Self.FK_Assessment_Questions_Assessment_Questions">
+            <End Role="Assessment_QuestionSets" EntitySet="Assessment_QuestionSets" />
+            <End Role="Assessment_Questions" EntitySet="Assessment_Questions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UA_PortalLogin_Companies" Association="Self.FK_UA_PortalLogin_Companies">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="UA_PortalLogin" EntitySet="UA_PortalLogin" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DevPortalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AddressLine1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AddressLine2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TownCity" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="County" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Postcode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyTel" Type="String" MaxLength="14" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyGUID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="UA_PortalLogin" Relationship="Self.FK_UA_PortalLogin_Companies" FromRole="Companies" ToRole="UA_PortalLogin" />
+        </EntityType>
+        <EntityType Name="UA_PortalLogin">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordHash" Type="Binary" MaxLength="64" FixedLength="true" />
+          <Property Name="Salt" Type="Guid" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccessLevelID" Type="Int32" />
+          <Property Name="UserGUID" Type="Guid" />
+          <Property Name="PasswordToken" Type="Guid" />
+          <Property Name="PasswordTokenDate" Type="DateTime" Precision="3" />
+          <Property Name="CompanyID" Type="Int32" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_UA_PortalLogin_Companies" FromRole="UA_PortalLogin" ToRole="Companies" />
+        </EntityType>
+        <Association Name="FK_UA_PortalLogin_Companies">
+          <End Role="Companies" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="UA_PortalLogin" Type="Self.UA_PortalLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="UA_PortalLogin">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DevPortalEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Companies" EntityType="Self.Company" />
+          <EntitySet Name="UA_PortalLogin" EntityType="Self.UA_PortalLogin" />
+          <AssociationSet Name="FK_UA_PortalLogin_Companies" Association="Self.FK_UA_PortalLogin_Companies">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="UA_PortalLogin" EntitySet="UA_PortalLogin" />
+          </AssociationSet>
+          <EntitySet Name="Assessment_Questions" EntityType="DevPortalModel.Assessment_Questions" />
+          <EntitySet Name="Assessment_QuestionSets" EntityType="DevPortalModel.Assessment_QuestionSets" />
+          <EntitySet Name="Menus" EntityType="DevPortalModel.Menu" />
+          <EntitySet Name="MenuAccessLevels" EntityType="DevPortalModel.MenuAccessLevel" />
+          <AssociationSet Name="FK_Assessment_Questions_Assessment_Questions" Association="DevPortalModel.FK_Assessment_Questions_Assessment_Questions">
+            <End Role="Assessment_QuestionSets" EntitySet="Assessment_QuestionSets" />
+            <End Role="Assessment_Questions" EntitySet="Assessment_Questions" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Assessment_Questions">
+          <Key>
+            <PropertyRef Name="QuestionID" />
+          </Key>
+          <Property Name="QuestionID" Type="Int32" Nullable="false" />
+          <Property Name="QuestionDisplayName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="QuestionDisplayGuidance" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="InternalName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="InternalCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Archive" Type="Byte" />
+          <Property Name="QuestionSetID" Type="Int32" />
+          <NavigationProperty Name="Assessment_QuestionSets" Relationship="DevPortalModel.FK_Assessment_Questions_Assessment_Questions" FromRole="Assessment_Questions" ToRole="Assessment_QuestionSets" />
+        </EntityType>
+        <EntityType Name="Assessment_QuestionSets">
+          <Key>
+            <PropertyRef Name="QuestionSetID" />
+          </Key>
+          <Property Name="QuestionSetID" Type="Int32" Nullable="false" />
+          <Property Name="QuestionSetDisplayName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="QuestionSetInternalName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Archived" Type="Byte" />
+          <Property Name="Order" Type="Int32" />
+          <NavigationProperty Name="Assessment_Questions" Relationship="DevPortalModel.FK_Assessment_Questions_Assessment_Questions" FromRole="Assessment_QuestionSets" ToRole="Assessment_Questions" />
+        </EntityType>
+        <EntityType Name="Menu">
+          <Key>
+            <PropertyRef Name="MenuID" />
+          </Key>
+          <Property Name="MenuID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MenuItemName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="URL" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MenuAccessLevel">
+          <Key>
+            <PropertyRef Name="MenuID" />
+            <PropertyRef Name="AccessLevelID" />
+          </Key>
+          <Property Name="MenuID" Type="Int32" Nullable="false" />
+          <Property Name="AccessLevelID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Assessment_Questions_Assessment_Questions">
+          <End Type="DevPortalModel.Assessment_QuestionSets" Role="Assessment_QuestionSets" Multiplicity="0..1" />
+          <End Type="DevPortalModel.Assessment_Questions" Role="Assessment_Questions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Assessment_QuestionSets">
+              <PropertyRef Name="QuestionSetID" />
+            </Principal>
+            <Dependent Role="Assessment_Questions">
+              <PropertyRef Name="QuestionSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DevPortalModelStoreContainer" CdmEntityContainer="DevPortalEntities">
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="DevPortalModel.Company">
+              <MappingFragment StoreEntitySet="Companies">
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+                <ScalarProperty Name="TownCity" ColumnName="TownCity" />
+                <ScalarProperty Name="County" ColumnName="County" />
+                <ScalarProperty Name="Postcode" ColumnName="Postcode" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="CompanyTel" ColumnName="CompanyTel" />
+                <ScalarProperty Name="CompanyGUID" ColumnName="CompanyGUID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UA_PortalLogin">
+            <EntityTypeMapping TypeName="DevPortalModel.UA_PortalLogin">
+              <MappingFragment StoreEntitySet="UA_PortalLogin">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="Salt" ColumnName="Salt" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="AccessLevelID" ColumnName="AccessLevelID" />
+                <ScalarProperty Name="UserGUID" ColumnName="UserGUID" />
+                <ScalarProperty Name="PasswordToken" ColumnName="PasswordToken" />
+                <ScalarProperty Name="PasswordTokenDate" ColumnName="PasswordTokenDate" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Assessment_Questions">
+            <EntityTypeMapping TypeName="DevPortalModel.Assessment_Questions">
+              <MappingFragment StoreEntitySet="Assessment_Questions">
+                <ScalarProperty Name="QuestionSetID" ColumnName="QuestionSetID" />
+                <ScalarProperty Name="Archive" ColumnName="Archive" />
+                <ScalarProperty Name="InternalCode" ColumnName="InternalCode" />
+                <ScalarProperty Name="InternalName" ColumnName="InternalName" />
+                <ScalarProperty Name="QuestionDisplayGuidance" ColumnName="QuestionDisplayGuidance" />
+                <ScalarProperty Name="QuestionDisplayName" ColumnName="QuestionDisplayName" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Assessment_QuestionSets">
+            <EntityTypeMapping TypeName="DevPortalModel.Assessment_QuestionSets">
+              <MappingFragment StoreEntitySet="Assessment_QuestionSets">
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="Archived" ColumnName="Archived" />
+                <ScalarProperty Name="QuestionSetInternalName" ColumnName="QuestionSetInternalName" />
+                <ScalarProperty Name="QuestionSetDisplayName" ColumnName="QuestionSetDisplayName" />
+                <ScalarProperty Name="QuestionSetID" ColumnName="QuestionSetID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Menus">
+            <EntityTypeMapping TypeName="DevPortalModel.Menu">
+              <MappingFragment StoreEntitySet="Menu">
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="MenuItemName" ColumnName="MenuItemName" />
+                <ScalarProperty Name="MenuID" ColumnName="MenuID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuAccessLevels">
+            <EntityTypeMapping TypeName="DevPortalModel.MenuAccessLevel">
+              <MappingFragment StoreEntitySet="MenuAccessLevels">
+                <ScalarProperty Name="AccessLevelID" ColumnName="AccessLevelID" />
+                <ScalarProperty Name="MenuID" ColumnName="MenuID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

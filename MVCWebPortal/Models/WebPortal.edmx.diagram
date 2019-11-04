@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="32e9c9b5998a49d78a9dd80c6617cd21" Name="Diagram1">
+        <EntityTypeShape EntityType="DevPortalModel.Company" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DevPortalModel.UA_PortalLogin" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="DevPortalModel.FK_UA_PortalLogin_Companies" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DevPortalModel.Assessment_Questions" Width="1.5" PointX="8" PointY="1" />
+        <EntityTypeShape EntityType="DevPortalModel.Assessment_QuestionSets" Width="1.5" PointX="5.75" PointY="1.125" />
+        <EntityTypeShape EntityType="DevPortalModel.Menu" Width="1.5" PointX="0.75" PointY="5.75" />
+        <EntityTypeShape EntityType="DevPortalModel.MenuAccessLevel" Width="1.5" PointX="2.75" PointY="5.75" />
+        <AssociationConnector Association="DevPortalModel.FK_Assessment_Questions_Assessment_Questions" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
