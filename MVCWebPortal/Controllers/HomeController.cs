@@ -10,14 +10,12 @@ namespace MVCWebPortal.Controllers
     {
         public ActionResult Index()
         {
-            //return View();
-            return RedirectToAction("../Login");
+            return View();
+            //return RedirectToAction("../Login");
         }
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 

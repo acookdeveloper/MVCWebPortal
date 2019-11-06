@@ -98,6 +98,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="sp_UA_CreateAccount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Email" Type="nvarchar" Mode="In" />
+          <Parameter Name="PasswordA" Type="nvarchar" Mode="In" />
+          <Parameter Name="PasswordB" Type="nvarchar" Mode="In" />
+          <Parameter Name="CompanyID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_UA_Login" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Email" Type="nvarchar" Mode="In" />
+          <Parameter Name="Password" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_UA_SetPassword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="PasswordA" Type="nvarchar" Mode="In" />
+          <Parameter Name="PasswordB" Type="nvarchar" Mode="In" />
+        </Function>
         <EntityContainer Name="DevPortalModelStoreContainer">
           <EntitySet Name="Assessment_Questions" EntityType="Self.Assessment_Questions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Assessment_QuestionSets" EntityType="Self.Assessment_QuestionSets" Schema="dbo" store:Type="Tables" />
@@ -178,6 +193,21 @@
             <End Role="Assessment_QuestionSets" EntitySet="Assessment_QuestionSets" />
             <End Role="Assessment_Questions" EntitySet="Assessment_Questions" />
           </AssociationSet>
+          <FunctionImport Name="sp_UA_CreateAccount">
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="PasswordA" Mode="In" Type="String" />
+            <Parameter Name="PasswordB" Mode="In" Type="String" />
+            <Parameter Name="CompanyID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_UA_Login" ReturnType="Collection(Int32)">
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_UA_SetPassword">
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="PasswordA" Mode="In" Type="String" />
+            <Parameter Name="PasswordB" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Assessment_Questions">
           <Key>
@@ -311,6 +341,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_UA_CreateAccount" FunctionName="DevPortalModel.Store.sp_UA_CreateAccount" />
+          <FunctionImportMapping FunctionImportName="sp_UA_Login" FunctionName="DevPortalModel.Store.sp_UA_Login" />
+          <FunctionImportMapping FunctionImportName="sp_UA_SetPassword" FunctionName="DevPortalModel.Store.sp_UA_SetPassword" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
