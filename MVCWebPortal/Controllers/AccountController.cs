@@ -39,32 +39,6 @@ namespace MVCWebPortal.Controllers
             return View();
         }
 
-        //Login 
-
-        public ActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Login(UA_PortalLogin portalLogin)
-        {
-            using (OurDbContext db = new OurDbContext())
-            {
-                var UserExists = db.User.Single(usr => usr.Email == portalLogin.Email && usr.PasswordHash == portalLogin.PasswordHash);
-                if (UserExists != null)
-                {
-                    Session["UserID"] = UserExists.UserID.ToString();
-                    return RedirectToAction("LoggedIn");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Email or Password incorrect");
-                }
-            }
-            return View();
-        }
-
         public ActionResult LoggedIn()
         {
             if (Session["UserID"] != null)

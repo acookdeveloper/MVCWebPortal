@@ -10,7 +10,18 @@ namespace MVCWebPortal.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+
+            switch (Session["UserID"])
+            {
+                case null:
+                    return RedirectToAction("../Login");
+                case 2:
+                    return View();
+                default:
+                    return View();
+            }
+
+            //return View();
             //return RedirectToAction("../Login");
         }
 
